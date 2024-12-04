@@ -11,8 +11,12 @@ import Link from "next/link";
 import Form from "next/form";
 import { Button } from "./ui/button";
 import { PackageIcon, TrolleyIcon } from "@sanity/icons";
+import useCartStore from "@/store/cart";
 const Header = () => {
   const { user } = useUser();
+  const itemCount = useCartStore((state) =>
+    state.items.reduce((total, item) => total + item.quantity, 0)
+  );
 
   const createClerkPasskey = async () => {
     try {
@@ -45,12 +49,17 @@ const Header = () => {
           {/* <button type="submit">Search</button> */}
         </Form>
         <div className="flex items-center space-x-4 mt-4 sm:mt-0 flex-1 sm:flex-none">
-          <Button asChild>
+          <Button asChild className="relative">
             {/* TODO: No of items in cart */}
 
             <Link href="/cart">
               {" "}
               <TrolleyIcon />
+              {!!itemCount && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                  {itemCount}
+                </span>
+              )}
               Cart
             </Link>
           </Button>

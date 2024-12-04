@@ -1,3 +1,4 @@
+import AddToCartButton from "@/components/AddToCartButton";
 import { imageUrl } from "@/lib/imageUrl";
 import { getProductBySlug } from "@/sanity/lib/products/getProductBySlug";
 import { PortableText } from "next-sanity";
@@ -17,7 +18,7 @@ const ProductPage = async ({
     return notFound();
   }
   console.log(product);
-  const isOutOfStock = product.stock && product.stock <= 0;
+  const isOutOfStock: boolean = product.stock ? product.stock <= 0 : true;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -52,6 +53,9 @@ const ProductPage = async ({
                 <PortableText value={product.description} />
               )}
             </div>
+          </div>
+          <div className="mt-6">
+            <AddToCartButton product={product} disabled={isOutOfStock} />
           </div>
         </div>
       </div>
