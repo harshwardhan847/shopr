@@ -16,14 +16,14 @@ const ProductThumb = ({ product }: Props) => {
     <Link
       href={`/product/${product.slug?.current}`}
       className={cn(
-        `group flex flex-col bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden`,
+        `group flex flex-col bg-white rounded-lg border border-gray-200 hover:shadow-md shadow-sm  transition-all duration-200 overflow-hidden`,
         isOutOfStock ? "opacity-50" : ""
       )}
     >
       <div className="relative aspect-square w-full h-full overflow-hidden">
         {product.image && (
           <Image
-            className="object-contain transition-transform duration-300 group-hover:scale-105"
+            className="object-cover object-top transition-transform duration-300 group-hover:scale-105"
             src={imageUrl(product.image).url()}
             alt={product.name || "Product Image"}
             fill
@@ -41,7 +41,11 @@ const ProductThumb = ({ product }: Props) => {
           {product.name}
         </h2>
         <p className="mt-2 text-sm text-gray-600 line-clamp-2">
-          {product.description || "No description available"}
+          {product.description?.map((block) =>
+            block._type === "block"
+              ? block.children?.map((child) => child.text).join("")
+              : ""
+          ) || "No description available"}
         </p>
         <p className="mt-2 text-lg font-bold text-gray-900">
           ${product.price?.toFixed(2)}

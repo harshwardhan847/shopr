@@ -4,7 +4,7 @@ import { sanityFetch } from "../live";
 export const getAllCategories = async () => {
   const ALL_CATEGORIES_QUERY = defineQuery(`
   *[
-    _type == "categories"
+    _type == "category"
   ] | order(name asc)
     `);
   try {
